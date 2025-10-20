@@ -6,6 +6,8 @@ import LoginForm from '../components/organisms/LoginForm/LoginForm';
 import ContactForm from '../components/organisms/ContactForm/ContactForm';
 import Cart from '../components/organisms/Cart/Cart';
 import { products as initialProducts } from '../data/products';
+import { Carousel } from 'react-bootstrap'; 
+import ProcessSection from '../components/organisms/ProcessSection/ProcessSection';
 
 interface Product {
   id: number;
@@ -67,7 +69,29 @@ const HomePage: React.FC = () => {
     <MainLayout cartCount={cartCount} onCartClick={() => setIsCartOpen(true)}>
       <section id="home" className="seccion">
         <h1>Bienvenido coleccionista!</h1>
-        {/* Aquí puedes agregar el carrusel de Bootstrap si lo deseas */}
+            <Carousel controls={false} indicators={false} interval={3000}>
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src="/assets/img/banner.png"
+                      alt="InfiniteCraft Store"
+                    />
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src="/assets/img/banner1.png"
+                      alt="Elegoo Saturn 4 Ultra 16k"
+                    />
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src="/assets/img/banner2.png"
+                      alt="Anycubic Wash & Cure 3 plus"
+                    />
+                  </Carousel.Item>
+                </Carousel>
         <p>Transforma tus ideas en figuras 3D de resina unicas!</p>
       </section>
       <ProductGrid products={products} onAddToCart={handleAddToCart} />
@@ -76,9 +100,10 @@ const HomePage: React.FC = () => {
       <section id="nosotros" className="seccion">
         <h2>Sobre Nosotros</h2>
         <article>
-          <p>Somos una Pyme dedicada a la impresión 3D personalizada...</p>
+          <p>Somos una Pyme dedicada a la impresión 3D personalizada, creada por un estudiante con pasión por la tecnología, el arte y la innovación. Nos especializamos en crear figuras personalizadas a partir de fotos de referencia, utilizando diversos estilos de escultura digital para ofrecer productos únicos y detallados!</p>
         </article>
       </section>
+      <ProcessSection />
       <ContactForm />
       {isCartOpen && (
         <Cart
