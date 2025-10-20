@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #f4f4f4;
@@ -28,6 +28,10 @@ main {
 }
 
 h1, h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+p {
     text-align: center;
     margin-bottom: 1.5rem;
 }
