@@ -1,4 +1,4 @@
-.modal {
+.custom-modal { 
     display: block;
     position: fixed;
     z-index: 2000;
@@ -9,7 +9,7 @@
     background-color: rgba(0,0,0,0.5);
 }
 
-.modal-contenido {
+.custom-modal-contenido {
     background-color: white;
     margin: 10% auto;
     padding: 2rem;

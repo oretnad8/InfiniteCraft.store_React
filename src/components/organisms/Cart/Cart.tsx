@@ -20,8 +20,8 @@ const Cart: React.FC<CartProps> = ({ cart, onClose, onRemoveFromCart, onCheckout
   const total = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
 
   return (
-    <div className="modal">
-      <div className="modal-contenido">
+    <div className="custom-modal">
+      <div className="custom-modal-contenido">
         <span className="cerrar" onClick={onClose}>&times;</span>
         <h2>Mi Carrito de Compras</h2>
         <div id="items-carrito">
