@@ -9,6 +9,7 @@ import { products as initialProducts } from '../data/products';
 import { Carousel } from 'react-bootstrap'; 
 import ProcessSection from '../components/organisms/ProcessSection/ProcessSection';
 
+/* define la forma de un producto */
 interface Product {
   id: number;
   nombre: string;
@@ -16,22 +17,22 @@ interface Product {
   imagen: string;
   categoria: string;
 }
-
+/* define la forma del producto + cantidad */
 interface CartItem extends Product {
   cantidad: number;
 }
-
+/* componente de la pagina */
 const HomePage: React.FC = () => {
-  const [products] = useState<Product[]>(initialProducts);
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [products] = useState<Product[]>(initialProducts);  /* valor inicial de productos */
+  const [cart, setCart] = useState<CartItem[]>([]);   /* valor inicial para el carrito */
+  const [isCartOpen, setIsCartOpen] = useState(false);    /* estado booleano para el carrito */
 
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = localStorage.getItem('cart');     /* busca si hay un carrito guardado */
     if (savedCart) {
-      setCart(JSON.parse(savedCart));
+      setCart(JSON.parse(savedCart));   /* si hay parcea el json */
     }
-  }, []);
+  }, []);   /* se ejecuta una vez, solo al iniciar */
 
   const handleAddToCart = (id: number) => {
     const product = products.find(p => p.id === id);
