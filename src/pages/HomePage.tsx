@@ -5,34 +5,36 @@ import RegisterForm from '../components/organisms/RegisterForm/RegisterForm';
 import LoginForm from '../components/organisms/LoginForm/LoginForm';
 import ContactForm from '../components/organisms/ContactForm/ContactForm';
 import Cart from '../components/organisms/Cart/Cart';
+import ProductModal from '../components/organisms/ProductModal/ProductModal'; // Importamos el nuevo modal
 import { products as initialProducts } from '../data/products';
 import { Carousel } from 'react-bootstrap'; 
 import ProcessSection from '../components/organisms/ProcessSection/ProcessSection';
 
-/* define la forma de un producto */
 interface Product {
   id: number;
   nombre: string;
   precio: number;
   imagen: string;
   categoria: string;
+  descripcion: string; // Añadimos descripción
 }
-/* define la forma del producto + cantidad */
+
 interface CartItem extends Product {
   cantidad: number;
 }
-/* componente de la pagina */
+
 const HomePage: React.FC = () => {
-  const [products] = useState<Product[]>(initialProducts);  /* valor inicial de productos */
-  const [cart, setCart] = useState<CartItem[]>([]);   /* valor inicial para el carrito */
-  const [isCartOpen, setIsCartOpen] = useState(false);    /* estado booleano para el carrito */
+  const [products] = useState<Product[]>(initialProducts);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para el producto seleccionado
 
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');     /* busca si hay un carrito guardado */
+    const savedCart = localStorage.getItem('cart');
     if (savedCart) {
-      setCart(JSON.parse(savedCart));   /* si hay parcea el json */
+      setCart(JSON.parse(savedCart));
     }
-  }, []);   /* se ejecuta una vez, solo al iniciar */
+  }, []);
 
   const handleAddToCart = (id: number) => {
     const product = products.find(p => p.id === id);
@@ -52,19 +54,31 @@ const HomePage: React.FC = () => {
   const handleRemoveFromCart = (index: number) => {
     setCart(prevCart => prevCart.filter((_, i) => i !== index));
   };
-
+  
   const handleCheckout = () => {
     alert('¡Compra realizada con éxito!');
     setCart([]);
     localStorage.removeItem('cart');
     setIsCartOpen(false);
   };
-
+  
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-
+  
   const cartCount = cart.reduce((total, item) => total + item.cantidad, 0);
+
+  // Funciones para el modal de detalles
+  const handleViewDetails = (id: number) => {
+    const product = products.find(p => p.id === id);
+    if(product) {
+      setSelectedProduct(product);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProduct(null);
+  };
 
   return (
     <MainLayout cartCount={cartCount} onCartClick={() => setIsCartOpen(true)}>
@@ -95,7 +109,11 @@ const HomePage: React.FC = () => {
                 </Carousel>
         <p>Transforma tus ideas en figuras 3D de resina unicas!</p>
       </section>
-      <ProductGrid products={products} onAddToCart={handleAddToCart} />
+      <ProductGrid 
+        products={products} 
+        onAddToCart={handleAddToCart} 
+        onViewDetails={handleViewDetails} // Pasamos la nueva función
+      />
       <RegisterForm />
       <LoginForm />
       <section id="nosotros" className="seccion">
@@ -112,6 +130,13 @@ const HomePage: React.FC = () => {
           onClose={() => setIsCartOpen(false)}
           onRemoveFromCart={handleRemoveFromCart}
           onCheckout={handleCheckout}
+        />
+      )}
+      {selectedProduct && ( // Renderizamos el modal si hay un producto seleccionado
+        <ProductModal 
+          product={selectedProduct}
+          onClose={handleCloseModal}
+          onAddToCart={handleAddToCart}
         />
       )}
     </MainLayout>

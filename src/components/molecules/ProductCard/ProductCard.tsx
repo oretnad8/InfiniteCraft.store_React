@@ -11,16 +11,22 @@ interface ProductCardProps {
     categoria: string;
   };
   onAddToCart: (id: number) => void;
+  onViewDetails: (id: number) => void; // Nueva prop
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewDetails }) => {
   return (
     <div className="producto-card">
-      <img src={product.imagen} alt={product.nombre} />
+      <div className="producto-card-img-container" onClick={() => onViewDetails(product.id)}>
+        <img src={product.imagen} alt={product.nombre} />
+      </div>
       <h3>{product.nombre}</h3>
       <p>Precio: ${product.precio.toLocaleString('es-CL')}</p>
       <p>Categoría: {product.categoria}</p>
-      <Button onClick={() => onAddToCart(product.id)}>Agregar al Carrito</Button>
+      <div className="producto-card-actions">
+        <Button onClick={() => onViewDetails(product.id)}>Ver Detalle</Button>
+        <Button onClick={() => onAddToCart(product.id)}>Agregar al Carrito</Button>
+      </div>
     </div>
   );
 };
