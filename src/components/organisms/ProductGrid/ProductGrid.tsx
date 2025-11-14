@@ -12,11 +12,10 @@ interface Product {
 
 interface ProductGridProps {
   products: Product[];
-  onAddToCart: (id: number) => void;
-  onViewDetails: (id: number) => void; // Nueva prop
+  onViewDetails: (id: number) => void; // Prop onAddToCart eliminada
 }
 
-const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart, onViewDetails }) => {
+const ProductGrid: React.FC<ProductGridProps> = ({ products, onViewDetails }) => {
   return (
     <section id="productos" className="seccion">
       <h2>Nuestros Productos</h2>
@@ -25,8 +24,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, onAddToCart, onView
           <ProductCard 
             key={product.id} 
             product={product} 
-            onAddToCart={onAddToCart}
-            onViewDetails={onViewDetails} // Pasamos la nueva función
+            onViewDetails={onViewDetails}
           />
         ))}
       </div>

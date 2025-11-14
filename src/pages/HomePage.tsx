@@ -5,7 +5,7 @@ import RegisterForm from '../components/organisms/RegisterForm/RegisterForm';
 import LoginForm from '../components/organisms/LoginForm/LoginForm';
 import ContactForm from '../components/organisms/ContactForm/ContactForm';
 import Cart from '../components/organisms/Cart/Cart';
-import ProductModal from '../components/organisms/ProductModal/ProductModal'; // Importamos el nuevo modal
+import ProductModal from '../components/organisms/ProductModal/ProductModal';
 import { products as initialProducts } from '../data/products';
 import { Carousel } from 'react-bootstrap'; 
 import ProcessSection from '../components/organisms/ProcessSection/ProcessSection';
@@ -16,18 +16,20 @@ interface Product {
   precio: number;
   imagen: string;
   categoria: string;
-  descripcion: string; // Añadimos descripción
+  descripcion: string;
 }
 
+// Interface actualizada de CartItem para incluir la foto de referencia
 interface CartItem extends Product {
   cantidad: number;
+  photo: string; // Base64 string de la foto de referencia
 }
 
 const HomePage: React.FC = () => {
   const [products] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para el producto seleccionado
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
@@ -36,26 +38,50 @@ const HomePage: React.FC = () => {
     }
   }, []);
 
-  const handleAddToCart = (id: number) => {
+  // Lógica de añadir al carrito actualizada para aceptar la foto
+  const handleAddToCart = (id: number, photo: string) => {
     const product = products.find(p => p.id === id);
     if (!product) return;
 
     setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.id === id);
+      // Un item personalizado es único por su foto, así que no agrupamos
+      // si se suben fotos diferentes, incluso si es el mismo producto.
+      // Si se quiere agrupar, se debería comprobar también item.photo === photo
+      const existingItem = prevCart.find(item => item.id === id && item.photo === photo);
+      
       if (existingItem) {
         return prevCart.map(item =>
-          item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item
+          item.id === id && item.photo === photo ? { ...item, cantidad: item.cantidad + 1 } : item
         );
       }
-      return [...prevCart, { ...product, cantidad: 1 }];
+      // Se añade como un nuevo item en el carrito
+      return [...prevCart, { ...product, cantidad: 1, photo: photo }];
     });
+    // Cierra el modal después de añadir
+    handleCloseModal(); 
   };
 
   const handleRemoveFromCart = (index: number) => {
     setCart(prevCart => prevCart.filter((_, i) => i !== index));
   };
   
+  // Lógica de checkout actualizada para guardar la orden en localStorage
   const handleCheckout = () => {
+    // 1. Obtener órdenes existentes
+    const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+    
+    // 2. Crear nueva orden con los items del carrito
+    const newOrder = {
+      id: `order-${Date.now()}`,
+      date: new Date().toLocaleString('es-CL'),
+      items: cart 
+    };
+    
+    // 3. Guardar la nueva lista de órdenes
+    const updatedOrders = [...existingOrders, newOrder];
+    localStorage.setItem('orders', JSON.stringify(updatedOrders));
+    
+    // 4. Limpiar el carrito y estado
     alert('¡Compra realizada con éxito!');
     setCart([]);
     localStorage.removeItem('cart');
@@ -66,9 +92,9 @@ const HomePage: React.FC = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
   
-  const cartCount = cart.reduce((total, item) => total + item.cantidad, 0);
+  // Se usa cart.length porque cada item con foto distinta es una entrada separada
+  const cartCount = cart.length; 
 
-  // Funciones para el modal de detalles
   const handleViewDetails = (id: number) => {
     const product = products.find(p => p.id === id);
     if(product) {
@@ -111,8 +137,8 @@ const HomePage: React.FC = () => {
       </section>
       <ProductGrid 
         products={products} 
-        onAddToCart={handleAddToCart} 
-        onViewDetails={handleViewDetails} // Pasamos la nueva función
+        onViewDetails={handleViewDetails}
+        // Se elimina onAddToCart de aquí
       />
       <RegisterForm />
       <LoginForm />
@@ -132,11 +158,11 @@ const HomePage: React.FC = () => {
           onCheckout={handleCheckout}
         />
       )}
-      {selectedProduct && ( // Renderizamos el modal si hay un producto seleccionado
+      {selectedProduct && (
         <ProductModal 
           product={selectedProduct}
           onClose={handleCloseModal}
-          onAddToCart={handleAddToCart}
+          onAddToCart={handleAddToCart} // onAddToCart ahora espera la foto
         />
       )}
     </MainLayout>

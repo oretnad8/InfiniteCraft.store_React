@@ -23,6 +23,7 @@ const ContactForm: React.FC = () => {
           label="Nombre:"
           type="text"
           id="contacto-nombre"
+          name="nombre" // <-- AÑADIDO
           value={values.nombre}
           onChange={handleChange}
           required
@@ -31,6 +32,7 @@ const ContactForm: React.FC = () => {
           label="Correo:"
           type="email"
           id="contacto-correo"
+          name="correo" // <-- AÑADIDO
           value={values.correo}
           onChange={handleChange}
           required

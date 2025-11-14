@@ -7,6 +7,7 @@ interface CartItem {
   nombre: string;
   precio: number;
   cantidad: number;
+  photo: string; // Prop de foto añadida
 }
 
 interface CartProps {
@@ -30,7 +31,15 @@ const Cart: React.FC<CartProps> = ({ cart, onClose, onRemoveFromCart, onCheckout
           ) : (
             cart.map((item, index) => (
               <div className="item-carrito" key={index}>
-                <span>{item.nombre} x{item.cantidad}</span>
+                <img 
+                  src={item.photo} 
+                  alt={item.nombre} 
+                  style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px', marginRight: '10px' }} 
+                />
+                <div style={{ flexGrow: 1 }}>
+                  <span>{item.nombre} x{item.cantidad}</span>
+                  <span style={{ display: 'block', fontSize: '0.8rem', color: '#777' }}>Referencia adjunta</span>
+                </div>
                 <span>${(item.precio * item.cantidad).toLocaleString('es-CL')}</span>
                 <Button onClick={() => onRemoveFromCart(index)} className="btn-danger">Eliminar</Button>
               </div>

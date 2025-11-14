@@ -27,6 +27,7 @@ const RegisterForm: React.FC = () => {
           label="Nombre Completo:"
           type="text"
           id="nombre"
+          name="nombre" // <-- AÑADIDO
           value={values.nombre}
           onChange={handleChange}
           required
@@ -35,6 +36,7 @@ const RegisterForm: React.FC = () => {
           label="Correo:"
           type="email"
           id="correo"
+          name="correo" // <-- AÑADIDO
           value={values.correo}
           onChange={handleChange}
           required
@@ -43,6 +45,7 @@ const RegisterForm: React.FC = () => {
           label="Contraseña:"
           type="password"
           id="password"
+          name="password" // <-- AÑADIDO
           value={values.password}
           onChange={handleChange}
           required
@@ -51,6 +54,7 @@ const RegisterForm: React.FC = () => {
           label="Teléfono (opcional):"
           type="tel"
           id="telefono"
+          name="telefono" // <-- AÑADIDO
           value={values.telefono}
           onChange={handleChange}
         />
