@@ -1,6 +1,7 @@
 // InfiniteCraft.store_React/src/hooks/useAuth.ts
 
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
+import type { ReactNode } from 'react';
 import axios from 'axios';
 import { ENDPOINTS } from '../constants/api';
 
@@ -129,10 +130,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const isAuthenticated = !!user && !!token;
 
-  return (
-    <AuthContext.Provider value={{ user, token, isAuthenticated, login, logout, isLoading }}>
-      {children}
-    </AuthContext.Provider>
+  return React.createElement(
+    AuthContext.Provider,
+    { value: { user, token, isAuthenticated, login, logout, isLoading } },
+    children
   );
 };
 
