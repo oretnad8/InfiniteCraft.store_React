@@ -1,17 +1,20 @@
-import React, { useState } from 'react';\nimport { useAuth } from '../../../hooks/useAuth';
+import React, { useState } from 'react';
+import { useAuth } from '../../../hooks/useAuth';
 import Button from '../../atoms/Button/Button';
 import FormField from '../../molecules/FormField/FormField';
 import useForm from '../../../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm: React.FC = () => {\n  const { login } = useAuth();
+const LoginForm: React.FC = () => {
+  const { login } = useAuth();
   const { values, handleChange, handleSubmit } = useForm({
     correo: '',
     password: '',
   });
   
   const navigate = useNavigate();
-  const [error, setError] = useState<string>('');\n  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleFormSubmit = async () => {
     const { correo, password } = values;
@@ -19,10 +22,16 @@ const LoginForm: React.FC = () => {\n  const { login } = useAuth();
     try {
       setIsLoading(true);
       await login(correo, password);
-      setError('');\n      // La redirección a /admin se manejará en el componente superior o en App.tsx\n    } catch (err) {
-      if (err instanceof Error) {\n        setError(err.message);\n      } else {\n        setError('Error desconocido al iniciar sesión.');\n      }
+      setError('');
+      // La redirección a /admin se manejará en el componente superior o en App.tsx
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Error desconocido al iniciar sesión.');
+      }
     } finally {
-      setIsLoading(false);\n    }
+      setIsLoading(false);
     }
   };
 
