@@ -39,7 +39,6 @@ const decodeToken = (token: string): User | null => {
     
     // Asumiendo que el payload del token contiene la información del usuario
     // y que el backend de Spring Boot lo serializa correctamente.
-    // Ajustar los nombres de las propiedades si es necesario.
     return {
       id: payload.id,
       nombre: payload.nombre,
@@ -73,10 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       // En un entorno real, se debería usar el endpoint /auth/validate
       // para verificar la validez del token en el servidor.
-      // Por simplicidad y asumiendo que el token es válido si existe,
-      // decodificaremos localmente. Si el backend lo requiere, se puede
-      // descomentar la lógica de validación.
-
+      
       // const response = await axios.post(ENDPOINTS.VALIDATE_TOKEN, null, {
       //   params: { token: t }
       // });
