@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react';\nimport { useAuth } from '../../../hooks/useAuth';
 import Button from '../../atoms/Button/Button';
 import FormField from '../../molecules/FormField/FormField';
 import useForm from '../../../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm: React.FC = () => {
+const LoginForm: React.FC = () => {\n  const { login } = useAuth();
   const { values, handleChange, handleSubmit } = useForm({
     correo: '',
     password: '',
   });
   
   const navigate = useNavigate();
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>('');\n  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     const { correo, password } = values;
 
-    if (correo === 'admin@8craftstore.cl' && password === '123456') {
-      console.log('Admin login successful');
-      setError('');
-      navigate('/admin');
-    } else {
-      console.log('Login failed: ', values);
-      setError('Credenciales incorrectas. Intente nuevamente.');
+    try {
+      setIsLoading(true);
+      await login(correo, password);
+      setError('');\n      // La redirección a /admin se manejará en el componente superior o en App.tsx\n    } catch (err) {
+      if (err instanceof Error) {\n        setError(err.message);\n      } else {\n        setError('Error desconocido al iniciar sesión.');\n      }
+    } finally {
+      setIsLoading(false);\n    }
     }
   };
 
@@ -49,7 +49,7 @@ const LoginForm: React.FC = () => {
           required
         />
         {error && <p style={{ color: '#e74c3c', marginTop: '10px' }}>{error}</p>}
-        <Button type="submit">Iniciar Sesión</Button>
+        <Button type="submit" disabled={isLoading}>{isLoading ? 'Iniciando...' : 'Iniciar Sesión'}</Button>
       </form>
     </section>
   );
