@@ -15,6 +15,7 @@ export const ENDPOINTS = {
   ADD_PRODUCT: BASE_URLS.PRODUCT,
   UPLOAD_IMAGE: `${BASE_URLS.PRODUCT}/images`,
   GET_USER_CART: (userId: number) => `${BASE_URLS.CART}/${userId}`,
+  CLEAR_CART: (userId: number) => `${BASE_URLS.CART}/${userId}/clear`,
   ADD_TO_CART: (userId: number) => `${BASE_URLS.CART}/${userId}/add`,
   CHECKOUT: (userId: number) => `${BASE_URLS.CART}/${userId}/checkout`,
   GET_USER_ORDERS: (userId: number) => `${BASE_URLS.CART}/orders/${userId}`,

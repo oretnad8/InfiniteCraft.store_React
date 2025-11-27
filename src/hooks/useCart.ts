@@ -128,7 +128,7 @@ export const useCart = () => {
     setIsLoading(true);
     try {
       // Limpiar carrito en el servidor primero
-      await axios.delete(ENDPOINTS.GET_USER_CART(user.id), {
+      await axios.delete(ENDPOINTS.CLEAR_CART(user.id), {
         headers: { Authorization: `Bearer ${token}` },
       });
 

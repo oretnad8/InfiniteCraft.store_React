@@ -186,7 +186,7 @@ const AdminPage: React.FC = () => {
                         </select>
                       </Card.Header>
                       <Card.Body>
-                        {order.orderDetails.map((detail, index) => (
+                        {(order.orderDetails || []).map((detail, index) => (
                           <div
                             key={index}
                             className="d-flex align-items-center mb-3 p-2 border rounded"
