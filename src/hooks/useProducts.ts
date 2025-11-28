@@ -1,4 +1,3 @@
-// InfiniteCraft.store_React/src/hooks/useProducts.ts
 
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';

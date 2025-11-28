@@ -1,4 +1,3 @@
-// InfiniteCraft.store_React/src/constants/api.ts
 
 export const BASE_URLS = {
   AUTH: "http://fotomarwmsdb.ddns.net:8081/auth",

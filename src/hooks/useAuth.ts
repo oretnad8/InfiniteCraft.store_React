@@ -1,4 +1,3 @@
-// InfiniteCraft.store_React/src/hooks/useAuth.ts
 
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
