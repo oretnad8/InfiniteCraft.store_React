@@ -99,29 +99,49 @@ const AdminPage: React.FC = () => {
       return;
     }
 
+    if (newProduct.requiresPhoto && !productImageFile) {
+      setProductError('Debes subir una imagen si requiere foto de referencia.');
+      return;
+    }
+
     setIsSubmittingProduct(true);
     setProductError(null);
 
     try {
-      const formData = new FormData();
-      formData.append('nombre', newProduct.nombre);
-      formData.append('precio', newProduct.precio.toString());
-      formData.append('categoria', newProduct.categoria);
-      formData.append('descripcion', newProduct.descripcion);
-      formData.append('requiresPhoto', newProduct.requiresPhoto.toString());
+      let response;
 
-      if (productImageFile) {
+      if (newProduct.requiresPhoto && productImageFile) {
+        // Enviar como multipart/form-data si hay archivo
+        const formData = new FormData();
+        formData.append('nombre', newProduct.nombre);
+        formData.append('precio', newProduct.precio.toString());
+        formData.append('categoria', newProduct.categoria);
+        formData.append('descripcion', newProduct.descripcion);
+        formData.append('requiresPhoto', newProduct.requiresPhoto.toString());
         formData.append('file', productImageFile);
-      } else if (newProduct.imagen) {
-        formData.append('imagen', newProduct.imagen);
-      }
 
-      const response = await axios.post(ENDPOINTS.ADD_PRODUCT, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        response = await axios.post(ENDPOINTS.ADD_PRODUCT, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        // Enviar como JSON si solo es URL
+        response = await axios.post(ENDPOINTS.ADD_PRODUCT, {
+          nombre: newProduct.nombre,
+          precio: newProduct.precio,
+          categoria: newProduct.categoria,
+          descripcion: newProduct.descripcion,
+          imagen: newProduct.imagen,
+          requiresPhoto: newProduct.requiresPhoto,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
 
       if (response.status === 201 || response.status === 200) {
         alert('¡Producto agregado exitosamente!');
