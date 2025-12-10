@@ -7,20 +7,17 @@ import { useAuth } from './useAuth';
 export interface OrderDetail {
   id: number;
   productId: number;
-  productName: string;
-  productImage: string;
   quantity: number;
   price: number;
-  referencePhoto?: string;
 }
 
 export interface Order {
   id: number;
   userId: number;
-  orderDate: string;
-  status: 'PENDING' | 'RECEIVED' | 'IN_PREPARATION' | 'COMPLETED';
+  date: string;
+  status: 'PENDING' | 'RECEIVED' | 'IN_PREPARATION' | 'COMPLETED' | null;
   total: number;
-  orderDetails: OrderDetail[];
+  details: OrderDetail[];
 }
 
 export const useOrders = () => {

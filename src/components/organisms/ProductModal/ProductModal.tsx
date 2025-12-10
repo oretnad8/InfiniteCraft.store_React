@@ -71,7 +71,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, onAddToCa
       <div className="custom-modal-contenido">
         <span className="cerrar" onClick={onClose}>&times;</span>
         <h2>{product.nombre}</h2>
-        <div className="modal-body">
+        <div className="product-modal-body">
           <img src={product.imagen} alt={product.nombre} className="modal-img" />
           <div className="modal-details">
             <p><strong>Categoría:</strong> {product.categoria}</p>

@@ -34,7 +34,7 @@
     color: #333;
 }
 
-.modal-body {
+.product-modal-body {
     display: flex;
     gap: 2rem;
     margin-top: 1.5rem;

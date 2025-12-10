@@ -14,7 +14,7 @@ import { useAuth } from '../hooks/useAuth';
 
 const HomePage: React.FC = () => {
   const { products, isLoading: productsLoading, error: productsError } = useProducts();
-  const { cart, addToCart, removeFromCart, updateQuantity, clearCart, checkout, isLoading: cartLoading } = useCart();
+  const { cart, addToCart, removeFromCart, updateQuantity, checkout, isLoading: cartLoading } = useCart();
   const { isAuthenticated } = useAuth();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);

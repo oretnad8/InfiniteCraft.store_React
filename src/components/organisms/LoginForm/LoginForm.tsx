@@ -3,7 +3,7 @@ import { useAuth } from '../../../hooks/useAuth';
 import Button from '../../atoms/Button/Button';
 import FormField from '../../molecules/FormField/FormField';
 import useForm from '../../../hooks/useForm';
-import { useNavigate } from 'react-router-dom';
+
 
 const LoginForm: React.FC = () => {
   const { login } = useAuth();
@@ -11,8 +11,8 @@ const LoginForm: React.FC = () => {
     correo: '',
     password: '',
   });
-  
-  const navigate = useNavigate();
+
+
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
